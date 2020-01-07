@@ -12,7 +12,6 @@
             "$(TARGET_DIR)/usr/include"
         ],
         'libraries': [
-            "/usr/lib/libtimeswipe.so",
             "$(TARGET_DIR)/usr/lib/libtimeswipe.so",
         ],
         'dependencies': [
