@@ -8,10 +8,12 @@
         ],
         'include_dirs': [
             "<!@(node -p \"require('node-addon-api').include\")",
-            "<!@(node -p \"require('napi-thread-safe-callback').include\")"
+            "<!@(node -p \"require('napi-thread-safe-callback').include\")",
+            "$(TARGET_DIR)/usr/include"
         ],
         'libraries': [
             "/usr/lib/libtimeswipe.so",
+            "$(TARGET_DIR)/usr/lib/libtimeswipe.so",
         ],
         'dependencies': [
             "<!(node -p \"require('node-addon-api').gyp\")"
