@@ -10,7 +10,6 @@ npm install timeswipe
 ```
 
 ## Usage
-
 Example:
 ```
 var timeswipe = require('timeswipe');
