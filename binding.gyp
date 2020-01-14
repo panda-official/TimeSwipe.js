@@ -1,14 +1,6 @@
 {
     "variables": {
-	    "conditions": [
-	        ['BR2_VERSION!=""', {
-                "root_dir%": '$(TARGET_DIR)'
-            }],
-            ['BR2_VERSION==""', {
-                "root_dir%": ''
-            }],
-	  
-	  ]
+        'root_dir': "<!(echo '$(TARGET_DIR)')",
     },
     "targets": [{
         "target_name": "timeswipe",
