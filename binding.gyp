@@ -1,4 +1,15 @@
 {
+    "variables": {
+	    "conditions": [
+	        ['BR2_VERSION!=""', {
+                "root_dir%": '$(TARGET_DIR)'
+            }],
+            ['BR2_VERSION==""', {
+                "root_dir%": ''
+            }],
+	  
+	  ]
+    },
     "targets": [{
         "target_name": "timeswipe",
         "cflags!": [ "-fno-exceptions", "-Wall" ],
@@ -9,10 +20,10 @@
         'include_dirs': [
             "<!@(node -p \"require('node-addon-api').include\")",
             "<!@(node -p \"require('napi-thread-safe-callback').include\")",
-            "$(TARGET_DIR)/usr/include"
+            "<(root_dir)/usr/include"
         ],
         'libraries': [
-            "$(TARGET_DIR)/usr/lib/libtimeswipe.so",
+            "<(root_dir)/usr/lib/libtimeswipe.so",
         ],
         'dependencies': [
             "<!(node -p \"require('node-addon-api').gyp\")"
