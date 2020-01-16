@@ -37,7 +37,7 @@ Napi::Object TimeSwipeNAPI::Init(Napi::Env env, Napi::Object exports) {
                   InstanceMethod("SetSensorTransmissions", &TimeSwipeNAPI::SetSensorTransmissionsWrap),
                   InstanceMethod("SetSecondary", &TimeSwipeNAPI::SetSecondaryWrap),
                   InstanceMethod("Start", &TimeSwipeNAPI::StartWrap),
-                  InstanceMethod("SetSettings", &TimeSwipeNAPI::SetSecondaryWrap),
+                  InstanceMethod("SetSettings", &TimeSwipeNAPI::SetSettingsWrap),
                   InstanceMethod("GetSettings", &TimeSwipeNAPI::GetSettingsWrap),
                   InstanceMethod("onButton", &TimeSwipeNAPI::onButtonWrap),
                   InstanceMethod("onError", &TimeSwipeNAPI::onErrorWrap),
