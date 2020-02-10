@@ -87,3 +87,16 @@ Event Listener for errors.
  
 ### Stop ()
 Stop measurement.
+
+
+## Build instruction
+
+### Build docker image
+```
+docker build -t timeswipe:js .
+```
+
+### Make binary packages
+```
+docker run --rm -v "$PWD/":/usr/src timeswipe:js /usr/src/build.sh
+```
