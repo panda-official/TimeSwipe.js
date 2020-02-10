@@ -28,19 +28,14 @@ function build {
     node-pre-gyp rebuild --build-from-source --target_arch=${arch}
     node-pre-gyp package --target_arch=${arch}
     dpkg -r timeswipe
-    ls build/stage/*.gz
-    mv build/stage/*.gz ${src_dir}
+    find build -iname "*.tar.gz" -exec cp {} ${src_dir} \;
 }
 
-#wget ${timeswipe_uri}/timeswipe_0.0.6.armv7l.deb
-#dpkg -i timeswipe_0.0.6.armv7l.deb
 download_deb armv7l
 dpkg -i *.deb && rm *.deb
 build arm
 dpkg -r timeswipe
 
-#wget ${timeswipe_uri}/timeswipe_0.0.6.aarch64.deb
-#dpkg -i timeswipe_0.0.6.aarch64.deb
 download_deb aarch64
 dpkg -i *.deb && rm *.deb
 build arm64

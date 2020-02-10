@@ -100,3 +100,10 @@ docker build -t timeswipe:js .
 ```
 docker run --rm -v "$PWD/":/usr/src timeswipe:js /usr/src/build.sh
 ```
+
+after above command two files should be built in current directory:
+
+timeswipe-\*.tar.gz
+timeswipe-\*-linux-arm64.tar.gz
+
+create new release in github and move above file to the release
