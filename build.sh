@@ -14,15 +14,23 @@ function download_deb {
     curl -s https://api.github.com/repos/panda-official/TimeSwipe/releases/latest | grep "browser_download_url.*timeswipe.*$arch.deb" | cut -d : -f 2,3 | tr -d \"  | wget -qi -
 }
 
+function install_nodejs {
+    version=$1
+    apt -y remove nodejs
+    curl -sL https://deb.nodesource.com/setup_${version}.x | bash - && apt -y install -y nodejs && npm i node-pre-gyp -g
+}
+
 function build {
     export arch=$1
+    export node_version=$2
     export CC=${!arch}gcc
     export CXX=${!arch}g++
     export LD=${!arch}ld
     export STRIP=${!arch}strip
 
-    mkdir /build_${arch}
-    cd /build_${arch}
+    dir=/build_${arch}_${node_version}
+    mkdir $dir
+    cd $dir
     cp ${src_dir}/* .
     npm install
     node-pre-gyp rebuild --build-from-source --target_arch=${arch}
@@ -33,11 +41,19 @@ function build {
 
 download_deb armv7l
 dpkg -i *.deb && rm *.deb
-build arm
+for node_version in "12" "13";
+do
+    install_nodejs $node_version
+    build arm $node_version
+done
 dpkg -r timeswipe
 
 download_deb aarch64
 dpkg -i *.deb && rm *.deb
-build arm64
+for node_version in "12" "13";
+do
+    install_nodejs $node_version
+    build arm64 $node_version
+done
 dpkg -r timeswipe
 
