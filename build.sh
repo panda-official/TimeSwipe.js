@@ -1,5 +1,8 @@
 #!/bin/bash
 
+apt -y update
+apt -y dist-upgrade
+
 export timeswipe_uri=https://proxychain.io
 src_dir=`dirname $0`
 
@@ -35,7 +38,6 @@ function build {
     npm install
     node-pre-gyp rebuild --build-from-source --target_arch=${arch}
     node-pre-gyp package --target_arch=${arch}
-    dpkg -r timeswipe
     find build -iname "*.tar.gz" -exec cp {} ${src_dir} \;
 }
 
