@@ -3,7 +3,6 @@
 apt -y update
 apt -y dist-upgrade
 
-export timeswipe_uri=https://proxychain.io
 src_dir=`dirname $0`
 
 export arm=arm-linux-gnueabihf-
