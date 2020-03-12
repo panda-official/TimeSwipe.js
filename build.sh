@@ -3,7 +3,7 @@
 apt -y update
 apt -y dist-upgrade
 
-src_dir=`dirname $0`
+src_dir=`pwd`
 
 export arm=arm-linux-gnueabihf-
 export arm64=aarch64-linux-gnu-

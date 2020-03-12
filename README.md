@@ -1,3 +1,5 @@
+![](https://github.com/panda-official/TimeSwipe.js/workflows/Workflow/badge.svg)
+
 # [TimeSwipe](https://github.com/panda-official/TimeSwipe) wrapper for NodeJs [![npm version](https://badge.fury.io/js/timeswipe.svg)](https://badge.fury.io/js/timeswipe)
 
 ## Prerequisites
@@ -91,19 +93,14 @@ Stop measurement.
 
 ## Build instruction
 
-### Build docker image
+### Make binary packages locally using docker
 ```
-docker build -t timeswipe:js .
-```
-
-### Make binary packages
-```
-docker run --rm -v "$PWD/":/usr/src timeswipe:js /usr/src/build.sh
+docker run --rm -v "$PWD/":/usr/src -w /usr/src pandaofficial/timeswipe_js /usr/src/build.sh
 ```
 
-after above command two files should be built in current directory:
-
-timeswipe-\*.tar.gz
-timeswipe-\*-linux-arm64.tar.gz
-
-create new release in github and move above file to the release
+## Release new version on master branch
+```
+npm version patch
+npm publish
+git push --tags
+```

@@ -1,0 +1,51 @@
+on:
+  push:
+    branches:
+      - master
+    tags:
+    - 'v*'
+
+name: Workflow
+
+jobs:
+  build:
+    name: Build packages
+    runs-on: ubuntu-latest
+    container: pandaofficial/timeswipe_js
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build project
+        id: build_project
+        run: /build.sh
+
+  release:
+    name: Upload Release Asset
+    if: contains(github.ref, 'tags/v')
+    needs: [build]
+    runs-on: ubuntu-latest
+    container: pandaofficial/timeswipe_js
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build project
+        id: build_project
+        run: /build.sh
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload release
+        id: upload-release
+        uses: csexton/release-asset-action@v2
+        with:
+          pattern: "*timeswipe*.tar.gz"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          release-url: ${{ steps.create_release.outputs.upload_url }}
+
