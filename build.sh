@@ -1,7 +1,7 @@
 #!/bin/bash
 
-apt -y update
-apt -y dist-upgrade
+#apt -y update
+#apt -y dist-upgrade
 
 src_dir=`pwd`
 
@@ -39,6 +39,11 @@ function build {
     node-pre-gyp package --target_arch=${arch}
     find build -iname "*.tar.gz" -exec cp {} ${src_dir} \;
 }
+
+if [ "$1" == "custom" ]; then
+    build $2
+    exit 0
+fi
 
 download_deb armv7l
 dpkg -i *.deb && rm *.deb

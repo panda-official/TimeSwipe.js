@@ -78,6 +78,12 @@ Choose primary or secondary measurement type.
 For TimeSwipe pHAT IEPE this is 0 for IEPE, 1 for voltage signal (+-10V).
 For TimeSwipe pHAT DMS this is 0 for bridge circuits, 1 for current signal (4-20mA).
  
+### SetBurstSize (int number)
+Call callback for Start if at least number records available
+
+### SetSampleRate (int rate)
+Set sample rate. Default value is 48000
+
 ### Start (function(data,error))
 With this you can start measurement. Add callback with input data (array) and error (count of errors occured while record.
  
