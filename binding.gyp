@@ -1,6 +1,6 @@
 {
     "targets": [{
-        "target_name": "timeswipe",
+        "target_name": "timeswipe_bin",
         "cflags!": [ "-fno-exceptions", "-Wall" ],
         "cflags_cc!": [ "-fno-exceptions", "-Wall" ],
         "sources": [

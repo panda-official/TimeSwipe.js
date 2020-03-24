@@ -19,7 +19,7 @@
     "node-pre-gyp": "^0.14.0"
   },
   "binary": {
-    "module_name": "timeswipe",
+    "module_name": "timeswipe_bin",
     "remote_path": "/panda-official/TimeSwipe.js/releases/download/v{version}/",
     "module_path": "./build/Release/obj.target",
     "host": "https://github.com"
