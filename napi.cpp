@@ -14,6 +14,8 @@ private:
     void SetSensorGainsWrap(const Napi::CallbackInfo& info);
     void SetSensorTransmissionsWrap(const Napi::CallbackInfo& info);
     void SetSecondaryWrap(const Napi::CallbackInfo& info);
+    void SetBurstSizeWrap(const Napi::CallbackInfo& info);
+    Napi::Value SetSampleRateWrap(const Napi::CallbackInfo& info);
     Napi::Value StartWrap(const Napi::CallbackInfo& info);
     Napi::Value SetSettingsWrap(const Napi::CallbackInfo& info);
     Napi::Value GetSettingsWrap(const Napi::CallbackInfo& info);
@@ -36,6 +38,8 @@ Napi::Object TimeSwipeNAPI::Init(Napi::Env env, Napi::Object exports) {
                   InstanceMethod("SetSensorGains", &TimeSwipeNAPI::SetSensorGainsWrap),
                   InstanceMethod("SetSensorTransmissions", &TimeSwipeNAPI::SetSensorTransmissionsWrap),
                   InstanceMethod("SetSecondary", &TimeSwipeNAPI::SetSecondaryWrap),
+                  InstanceMethod("SetBurstSize", &TimeSwipeNAPI::SetBurstSizeWrap),
+                  InstanceMethod("SetSampleRate", &TimeSwipeNAPI::SetSampleRateWrap),
                   InstanceMethod("Start", &TimeSwipeNAPI::StartWrap),
                   InstanceMethod("SetSettings", &TimeSwipeNAPI::SetSettingsWrap),
                   InstanceMethod("GetSettings", &TimeSwipeNAPI::GetSettingsWrap),
@@ -133,7 +137,36 @@ void TimeSwipeNAPI::SetSecondaryWrap(const Napi::CallbackInfo& info) {
   }
 
   Napi::Number value = info[0].As<Napi::Number>();
-  this->SetSecondary(value);
+  this->SetSecondary(value.Uint32Value());
+}
+
+void TimeSwipeNAPI::SetBurstSizeWrap(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+  Napi::HandleScope scope(env);
+
+  int length = info.Length();
+
+  if (length <= 0 || !info[0].IsNumber()) {
+    Napi::TypeError::New(env, "Number expected").ThrowAsJavaScriptException();
+  }
+
+  Napi::Number value = info[0].As<Napi::Number>();
+  this->SetBurstSize(value.Uint32Value());
+}
+
+Napi::Value TimeSwipeNAPI::SetSampleRateWrap(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+  Napi::HandleScope scope(env);
+
+  int length = info.Length();
+
+  if (length <= 0 || !info[0].IsNumber()) {
+    Napi::TypeError::New(env, "Number expected").ThrowAsJavaScriptException();
+  }
+
+  Napi::Number value = info[0].As<Napi::Number>();
+  auto res = this->SetSampleRate(value);
+  return Napi::Boolean::New(env, res);
 }
 
 Napi::Value TimeSwipeNAPI::StartWrap(const Napi::CallbackInfo& info) {
@@ -149,18 +182,18 @@ Napi::Value TimeSwipeNAPI::StartWrap(const Napi::CallbackInfo& info) {
   }
   auto callback = std::make_shared<ThreadSafeCallback>(info[0].As<Napi::Function>());
 
-  auto res = this->Start([this, callback, fail](std::vector<Record> records, uint64_t errors) {
+  auto res = this->Start([this, callback, fail](SensorsData records, uint64_t errors) {
     try {
       if (fail) throw std::runtime_error("Function expected");
-      callback->call([records, errors] (Napi::Env env, std::vector<napi_value>& args) {
-          auto arr = Napi::Array::New(env, records.size());
-          unsigned i = 0;
-          for (const auto& r: records) {
+      callback->call([records, errors] (Napi::Env env, std::vector<napi_value>& args) mutable { //TODO: fix const modifiers in timeswipe.hpp and disable mutable
+          auto arr = Napi::Array::New(env, records.DataSize());
+          for (size_t i = 0; i < records.DataSize(); i++) {
               auto rec = Napi::Array::New(env, 4);
+              //auto rec = Napi::Float32Array::New(env, 4);
               for (unsigned j = 0; j < 4; j++) {
-                rec[j] = Napi::Number::New(env, r.Sensors[j]);
+                rec[j] = Napi::Number::New(env, records[j][i]);
               }
-              arr[i++] = rec;
+              arr[i] = rec;
           }
           args = { arr, Napi::Number::New(env, errors) };
       });
