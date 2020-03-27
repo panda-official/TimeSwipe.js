@@ -186,12 +186,12 @@ Napi::Value TimeSwipeNAPI::StartWrap(const Napi::CallbackInfo& info) {
     try {
       if (fail) throw std::runtime_error("Function expected");
       callback->call([records, errors] (Napi::Env env, std::vector<napi_value>& args) mutable { //TODO: fix const modifiers in timeswipe.hpp and disable mutable
-          auto arr = Napi::Array::New(env, records.DataSize());
-          for (size_t i = 0; i < records.DataSize(); i++) {
-              auto rec = Napi::Array::New(env, 4);
-              //auto rec = Napi::Float32Array::New(env, 4);
-              for (unsigned j = 0; j < 4; j++) {
-                rec[j] = Napi::Number::New(env, records[j][i]);
+          auto arr = Napi::Array::New(env, records.SensorsSize());
+          for (size_t i = 0; i < records.SensorsSize(); i++) {
+              auto rec = Napi::Array::New(env, records.DataSize());
+              //auto rec = Napi::Float32Array::New(env, records.DataSize());
+              for (unsigned j = 0; j < records.DataSize(); j++) {
+                rec[j] = Napi::Number::New(env, records[i][j]);
               }
               arr[i] = rec;
           }
