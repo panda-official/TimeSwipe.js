@@ -1,6 +1,6 @@
 var timeswipe = require('timeswipe');
 
-timeswipe.SetBridge(0);
+timeswipe.SetMode(0); //PRIMARY
 timeswipe.SetSensorOffsets(0,0,0,0);
 timeswipe.SetSensorGains(1,1,1,1);
 timeswipe.SetSensorTransmissions(1,1,1,1);

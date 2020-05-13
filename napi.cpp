@@ -13,7 +13,7 @@ private:
     void SetSensorOffsetsWrap(const Napi::CallbackInfo& info);
     void SetSensorGainsWrap(const Napi::CallbackInfo& info);
     void SetSensorTransmissionsWrap(const Napi::CallbackInfo& info);
-    void SetSecondaryWrap(const Napi::CallbackInfo& info);
+    void SetModeWrap(const Napi::CallbackInfo& info);
     void SetBurstSizeWrap(const Napi::CallbackInfo& info);
     Napi::Value SetSampleRateWrap(const Napi::CallbackInfo& info);
     Napi::Value StartWrap(const Napi::CallbackInfo& info);
@@ -37,7 +37,7 @@ Napi::Object TimeSwipeNAPI::Init(Napi::Env env, Napi::Object exports) {
                   InstanceMethod("SetSensorOffsets", &TimeSwipeNAPI::SetSensorOffsetsWrap),
                   InstanceMethod("SetSensorGains", &TimeSwipeNAPI::SetSensorGainsWrap),
                   InstanceMethod("SetSensorTransmissions", &TimeSwipeNAPI::SetSensorTransmissionsWrap),
-                  InstanceMethod("SetSecondary", &TimeSwipeNAPI::SetSecondaryWrap),
+                  InstanceMethod("SetMode", &TimeSwipeNAPI::SetModeWrap),
                   InstanceMethod("SetBurstSize", &TimeSwipeNAPI::SetBurstSizeWrap),
                   InstanceMethod("SetSampleRate", &TimeSwipeNAPI::SetSampleRateWrap),
                   InstanceMethod("Start", &TimeSwipeNAPI::StartWrap),
@@ -126,7 +126,7 @@ void TimeSwipeNAPI::SetSensorTransmissionsWrap(const Napi::CallbackInfo& info) {
   this->SetSensorTransmissions(value0.DoubleValue(), value1.DoubleValue(), value2.DoubleValue(), value3.DoubleValue());
 }
 
-void TimeSwipeNAPI::SetSecondaryWrap(const Napi::CallbackInfo& info) {
+void TimeSwipeNAPI::SetModeWrap(const Napi::CallbackInfo& info) {
     Napi::Env env = info.Env();
   Napi::HandleScope scope(env);
 
@@ -137,7 +137,7 @@ void TimeSwipeNAPI::SetSecondaryWrap(const Napi::CallbackInfo& info) {
   }
 
   Napi::Number value = info[0].As<Napi::Number>();
-  this->SetSecondary(value.Uint32Value());
+  this->SetMode(value.Uint32Value());
 }
 
 void TimeSwipeNAPI::SetBurstSizeWrap(const Napi::CallbackInfo& info) {

@@ -17,7 +17,7 @@ Example:
 var timeswipe = require('timeswipe');
 
 // Settings
-timeswipe.SetBridge(0);
+timeswipe.SetMode(0); //PRIMARY
 timeswipe.SetSensorOffsets(0,0,0,0);
 timeswipe.SetSensorGains(1,1,1,1);
 timeswipe.SetSensorTransmissions(1,1,1,1);
@@ -73,7 +73,7 @@ Set board internal measurement-gain (bit --> V).
 ### SetSensorTransmissions (double trans1, double trans2, double trans3, double trans4)
 Set sensor specific transmission (V --> real unit). You get those from their datasheet.
  
-### SetSecondary (int number)
+### SetMode (int number)
 Choose primary or secondary measurement type. 
 For TimeSwipe pHAT IEPE this is 0 for IEPE, 1 for voltage signal (+-10V).
 For TimeSwipe pHAT DMS this is 0 for bridge circuits, 1 for current signal (4-20mA).
