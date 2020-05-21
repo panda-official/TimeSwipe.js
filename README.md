@@ -17,14 +17,17 @@ Example:
 var timeswipe = require('timeswipe');
 
 // Settings
-timeswipe.SetMode(0); //PRIMARY
+timeswipe.SetMode("PRIMARY");
+console.log("mode: ", timeswipe.GetMode());
 timeswipe.SetSensorOffsets(0,0,0,0);
 timeswipe.SetSensorGains(1,1,1,1);
 timeswipe.SetSensorTransmissions(1,1,1,1);
+timeswipe.SetBurstSize(24000);
+timeswipe.SetSampleRate(24000);
 
 // Event Listener for Button
-timeswipe.onButton(async function (pressed, counter) {
-    console.error("onButton pressed: ", pressed, " counter: ", counter);
+timeswipe.onEvent(async function (ev) {
+    console.log("got event: ", ev);
 });
 
 // Event Listener for Errors
@@ -39,8 +42,8 @@ timeswipe.Start(async function (data, error) {
     if (error) {
         console.error("errors: ",error);
     } else {
+        lines += data[0].length;
         data.forEach(function(entry) {
-            lines = lines + 1;
         });
     }
 });
@@ -73,10 +76,10 @@ Set board internal measurement-gain (bit --> V).
 ### SetSensorTransmissions (double trans1, double trans2, double trans3, double trans4)
 Set sensor specific transmission (V --> real unit). You get those from their datasheet.
  
-### SetMode (int number)
+### SetMode (string mode)
 Choose primary or secondary measurement type. 
-For TimeSwipe pHAT IEPE this is 0 for IEPE, 1 for voltage signal (+-10V).
-For TimeSwipe pHAT DMS this is 0 for bridge circuits, 1 for current signal (4-20mA).
+For TimeSwipe pHAT IEPE this is PRIMARY for IEPE, NORM for voltage signal (+-10V).
+For TimeSwipe pHAT DMS this is PRIMARY for bridge circuits, NORM for current signal (4-20mA).
  
 ### SetBurstSize (int number)
 Call callback for Start if at least number records available
@@ -87,8 +90,8 @@ Set sample rate. Default value is 48000
 ### Start (function(data,error))
 With this you can start measurement. Add callback with input data (array) and error (count of errors occured while record.
  
-### onButton (function(pressed, counter))
-Event Listener for button pressed/released.
+### onEvent (function(ev))
+Event Listener.
  
 ### onError (OnErrorCallback cb)
 Event Listener for errors.
