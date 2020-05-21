@@ -35,13 +35,11 @@ function build {
     cd $dir
     cp ${src_dir}/* .
     npm install
-    node-pre-gyp rebuild --build-from-source --target_arch=${arch}
-    node-pre-gyp package --target_arch=${arch}
-    find build -iname "*.tar.gz" -exec cp {} ${src_dir} \;
+    node-pre-gyp rebuild --build-from-source --target_arch=${arch} && node-pre-gyp package --target_arch=${arch} && find build -iname "*.tar.gz" -exec cp {} ${src_dir} \;
 }
 
 if [ "$1" == "custom" ]; then
-    build $2
+    build $2 || exit 1
     exit 0
 fi
 
@@ -50,7 +48,7 @@ dpkg -i *.deb && rm *.deb
 for node_version in "12" "13";
 do
     install_nodejs $node_version
-    build arm $node_version
+    build arm $node_version || exit 1
 done
 dpkg -r timeswipe
 
@@ -59,7 +57,7 @@ dpkg -i *.deb && rm *.deb
 for node_version in "12" "13";
 do
     install_nodejs $node_version
-    build arm64 $node_version
+    build arm64 $node_version || exit 1
 done
 dpkg -r timeswipe
 
