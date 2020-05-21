@@ -1,7 +1,6 @@
 #include <napi.h>
 #include "napi-thread-safe-callback.hpp"
 #include "timeswipe.hpp"
-#include "events.h"
 
 class TimeSwipeNAPI: public TimeSwipe, public Napi::ObjectWrap<TimeSwipeNAPI>
 {
