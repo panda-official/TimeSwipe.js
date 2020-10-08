@@ -45,7 +45,7 @@ fi
 
 download_deb armv7l
 dpkg -i *.deb && rm *.deb
-for node_version in "12" "13";
+for node_version in "12" "13" "14";
 do
     install_nodejs $node_version
     build arm $node_version || exit 1
@@ -54,7 +54,7 @@ dpkg -r timeswipe
 
 download_deb aarch64
 dpkg -i *.deb && rm *.deb
-for node_version in "12" "13";
+for node_version in "12" "13" "14";
 do
     install_nodejs $node_version
     build arm64 $node_version || exit 1
